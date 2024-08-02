@@ -27,20 +27,7 @@ export async function fetchCameraStream(cameraId) {
     }
 }
 
-export async function fetchCameraById(id) {
-    try {
-        const response = await fetch(`${BASE_URL}/cameras/${id}/`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch camera by ID');
-        }
-        const data = await response.json();
-        console.log('Camera Data by ID:', data); // Imprime el resultado en la consola
-        return data;
-    } catch (error) {
-        console.error('Error fetching camera by ID:', error);
-        return null;
-    }
-}
+
 
 export async function fetchRecordings(cameraId) {
     try {

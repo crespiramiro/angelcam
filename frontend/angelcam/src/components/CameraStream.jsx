@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Hls from 'hls.js'; 
 import { fetchCameraStream } from '../api';
 
 export const CameraStream = ({ cameraId }) => {
   const [stream, setStream] = useState(null);
+  const videoRef = useRef(null);
 
   useEffect(() => {
     const getCameraStream = async () => {
       try {
         const data = await fetchCameraStream(cameraId);
-        setStream(data.stream); // Ajusta según la estructura de la respuesta
+        setStream(data.url);
       } catch (error) {
         console.error('Error fetching camera stream:', error);
       }
@@ -17,6 +19,21 @@ export const CameraStream = ({ cameraId }) => {
     getCameraStream();
   }, [cameraId]);
 
+  useEffect(() => {
+    if (stream && videoRef.current) {
+      const hls = new Hls();
+      hls.loadSource(stream); 
+      hls.attachMedia(videoRef.current);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        videoRef.current.play();
+      });
+
+      return () => {
+        hls.destroy(); 
+      };
+    }
+  }, [stream]);
+
   if (!stream) {
     return <div>Loading stream...</div>;
   }
@@ -24,7 +41,7 @@ export const CameraStream = ({ cameraId }) => {
   return (
     <div>
       <h2>Live Stream</h2>
-      <video src={stream} autoPlay controls />
+      <video ref={videoRef} controls style={{ width: '100%', height: 'auto' }} />
     </div>
   );
 };

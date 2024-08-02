@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { fetchRecordings } from '../api';
+import { useEffect, useState } from 'react';
+import { fetchRecordings } from '../api'; // Ajusta la ruta según sea necesario
 
 export const RecordingsList = ({ cameraId }) => {
   const [recordings, setRecordings] = useState([]);
@@ -8,26 +8,33 @@ export const RecordingsList = ({ cameraId }) => {
     const getRecordings = async () => {
       try {
         const data = await fetchRecordings(cameraId);
-        setRecordings(data.results);
+        setRecordings([data]);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching recordings:', error);
       }
     };
 
-    getRecordings();
+    if (cameraId) {
+      getRecordings();
+    }
   }, [cameraId]);
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Recordings</h2>
-      <ul>
-        {recordings.map((recording, index) => (
-          <li key={index}>
-            <video src={recording.url} controls />
-          </li>
-        ))}
-      </ul>
+      {recordings.length > 0 ? (
+        <ul>
+          {recordings.map((recording, index) => (
+            <li key={index}>
+              <video controls width="600">
+                <source src={recording.url} type="application/x-mpegUR" />
+                Your browser does not support the video tag.
+              </video>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No recordings available</p>
+      )}
     </div>
   );
 };
-

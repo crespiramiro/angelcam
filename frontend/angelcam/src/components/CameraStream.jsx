@@ -1,33 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchCameraStream } from '../api';
 
 export const CameraStream = ({ cameraId }) => {
   const [stream, setStream] = useState(null);
 
   useEffect(() => {
-    const getStream = async () => {
+    const getCameraStream = async () => {
       try {
         const data = await fetchCameraStream(cameraId);
-        setStream(data);
+        setStream(data.stream); // Ajusta según la estructura de la respuesta
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching camera stream:', error);
       }
     };
 
-    getStream();
+    getCameraStream();
   }, [cameraId]);
+
+  if (!stream) {
+    return <div>Loading stream...</div>;
+  }
 
   return (
     <div>
-      {stream ? (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Live Stream</h2>
-          <video src={stream.url} controls autoPlay />
-        </div>
-      ) : (
-        <p>Loading stream...</p>
-      )}
+      <h2>Live Stream</h2>
+      <video src={stream} autoPlay controls />
     </div>
   );
 };
-

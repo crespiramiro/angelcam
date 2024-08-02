@@ -1,19 +1,18 @@
 import { useState, useEffect } from "react"
 import { fetchCameras } from "../api"
 
-export const CameraList = ({selectCamera}) => {
+export const CameraList = () => {
 
   const [cameras, setCameras] = useState([]);
 
-
   useEffect(() => {
     const getCameras = async () => {
-      try {
         const data = await fetchCameras();
-        setCameras(data);
-      } catch (error) {
-        console.error(error);
-      }
+        if (Array.isArray(data)) {
+            setCameras(data);
+        } else {
+            console.error('La respuesta de la API no es un array:', data);
+        }
     };
 
     getCameras();
@@ -21,15 +20,17 @@ export const CameraList = ({selectCamera}) => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Cameras</h2>
-      <ul>
-        {cameras.map((camera) => (
-          <li key={camera.id}>
-            <button onClick={() => onSelectCamera(camera.id)}>{camera.name}</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+            <h1>Camera List</h1>
+            {cameras.length > 0 ? (
+                <ul>
+                    {cameras.map((camera, index) => (
+                        <li key={index}>{camera.name}</li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No cameras available</p>
+            )}
+        </div>
   );
 };
 

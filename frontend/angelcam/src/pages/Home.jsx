@@ -13,7 +13,7 @@ const Home = ({onLogout}) => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="h-screen w-screen overflow-x-hidden container  flex flex-col justify-start items-start ">
         <Header onLogout={onLogout} />  
       <CameraList onSelectCamera={handleSelectCamera} />
       {selectedCamera && (

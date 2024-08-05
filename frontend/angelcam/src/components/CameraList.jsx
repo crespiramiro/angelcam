@@ -22,7 +22,7 @@ export const CameraList = ({ onSelectCamera }) => {
   }, []);
 
   return (
-    <div>
+    <section className="flex flex-col w-full h-full px-16 py-16 bg-[#f5f5f5]" >
       <h2 className="text-2xl font-bold mb-4">Camera List</h2>
       <ul className="list-disc pl-5">
         {cameras.map(camera => (
@@ -35,6 +35,6 @@ export const CameraList = ({ onSelectCamera }) => {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 };

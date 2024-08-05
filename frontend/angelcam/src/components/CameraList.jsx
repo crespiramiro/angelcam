@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchCameras } from "../api";
 
-export const CameraList = ({ onSelectCamera }) => {
+const CameraList = ({ onSelectCamera }) => {
   const [cameras, setCameras] = useState([]);
 
   useEffect(() => {
@@ -22,19 +22,32 @@ export const CameraList = ({ onSelectCamera }) => {
   }, []);
 
   return (
-    <section className="flex flex-col w-full h-full px-16 py-16 bg-[#f5f5f5]" >
-      <h2 className="text-2xl font-bold mb-4">Camera List</h2>
-      <ul className="list-disc pl-5">
-        {cameras.map(camera => (
-          <li 
-            key={camera.id} 
-            className="cursor-pointer text-blue-500 hover:underline" 
+    <section className="flex flex-col w-full h-full px-4 py-10 bg-[#f5f5f5]">
+      <h2 className="text-2xl font-bold  self-center text-blue-500 opacity-70 my-10">Camera List</h2>
+      <div className="flex flex-col lg:flex-row justify-center items-center gap-x-12 ">
+        {cameras.map((camera) => (
+          <div
+            key={camera.id}
+            className="bg-white w-2/6 p-6 rounded-xl shadow cursor-pointer hover:shadow-lg transition-shadow"
             onClick={() => onSelectCamera(camera)}
           >
-            {camera.name}
-          </li>
+            <img
+              src={camera.live_snapshot}
+              alt={camera.name}
+              className="w-full h-48 object-cover mb-2 rounded"
+            />
+            <div className="text-center">
+              <h3 className="text-xl font-semibold">{camera.name}</h3>
+              <p className="text-gray-500">Status: {camera.status}</p>
+              <p className="text-gray-500">
+                Owner: {camera.owner.first_name} {camera.owner.last_name}
+              </p>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </section>
   );
 };
+
+export default CameraList;

@@ -1,23 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js'; 
-import { fetchCameraStream } from '../api';
 
-export const CameraStream = ({ cameraId }) => {
+export const CameraStream = ({ camera }) => {
   const [stream, setStream] = useState(null);
   const videoRef = useRef(null);
 
   useEffect(() => {
-    const getCameraStream = async () => {
-      try {
-        const data = await fetchCameraStream(cameraId);
-        setStream(data.url);
-      } catch (error) {
-        console.error('Error fetching camera stream:', error);
+    // Verifica si `camera` es válido y contiene el array `streams`
+    if (camera && camera.streams && camera.streams.length > 0) {
+      // Encuentra el primer stream con formato 'hls'
+      const hlsStream = camera.streams.find(s => s.format === 'hls');
+      if (hlsStream) {
+        setStream(hlsStream.url);
+      } else {
+        console.error('No HLS stream found');
       }
-    };
-
-    getCameraStream();
-  }, [cameraId]);
+    }
+  }, [camera]);
 
   useEffect(() => {
     if (stream && videoRef.current) {

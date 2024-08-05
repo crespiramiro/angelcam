@@ -12,20 +12,20 @@ export async function fetchCameras() {
     return data.results;
 }
 
-export async function fetchCameraStream(cameraId) {
-    try {
-        const response = await fetch(`${BASE_URL}/cameras/${cameraId}/stream/`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch camera stream');
-        }
-        const data = await response.json();
-        console.log('Camera Stream Data:', data); // Imprime el resultado en la consola
-        return data;
-    } catch (error) {
-        console.error('Error fetching camera stream:', error);
-        return null;
-    }
-}
+// export async function fetchCameraStream(cameraId) {
+//     try {
+//         const response = await fetch(`${BASE_URL}/cameras/${cameraId}/stream/`);
+//         if (!response.ok) {
+//             throw new Error('Failed to fetch camera stream');
+//         }
+//         const data = await response.json();
+//         console.log('Camera Stream Data:', data); // Imprime el resultado en la consola
+//         return data;
+//     } catch (error) {
+//         console.error('Error fetching camera stream:', error);
+//         return null;
+//     }
+// }
 
 
 
@@ -37,7 +37,7 @@ export async function fetchRecordings(cameraId) {
         }
         const data = await response.json();
         console.log('Recordings Data:', data); // Imprime el resultado en la consola
-        return data;
+        return [data]; // Devuelve un array con el objeto de grabación
     } catch (error) {
         console.error('Error fetching recordings:', error);
         return [];

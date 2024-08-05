@@ -8,7 +8,7 @@ const Home = () => {
 
   const handleSelectCamera = (camera) => {
     setSelectedCamera(camera);
-    console.log(camera,'CAMARA');
+    console.log(camera, 'CAMARA');
   };
 
   return (
@@ -16,7 +16,7 @@ const Home = () => {
       <CameraList onSelectCamera={handleSelectCamera} />
       {selectedCamera && (
         <>
-          <CameraStream cameraId={selectedCamera.id} />
+          <CameraStream camera={selectedCamera} />
           <RecordingsList cameraId={selectedCamera.id} />
         </>
       )}

@@ -65,14 +65,23 @@ export async function verifyToken(token) {
 
 
 export async function fetchRecordings(cameraId) {
+    const token = localStorage.getItem('authToken'); 
     try {
-        const response = await fetch(`${BASE_URL}/cameras/${cameraId}/recordings/`);
+        const response = await fetch(`${BASE_URL}/cameras/${cameraId}/recordings/`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `PersonalAccessToken ${token}`, // Incluye el token en el encabezado
+                'Content-Type': 'application/json'
+            }
+        });
+
         if (!response.ok) {
             throw new Error('Failed to fetch recordings');
         }
+
         const data = await response.json();
         console.log('Recordings Data:', data); // Imprime el resultado en la consola
-        return [data]; // Devuelve un array con el objeto de grabación
+        return [data]; // Devuelve el objeto de grabación directamente
     } catch (error) {
         console.error('Error fetching recordings:', error);
         return [];

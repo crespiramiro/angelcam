@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
       'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'angelcamProject.middleware.auth_middleware.TokenAuthMiddleware'
 ]
 
 ROOT_URLCONF = 'angelcamProject.urls'

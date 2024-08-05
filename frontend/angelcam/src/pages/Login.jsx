@@ -10,13 +10,11 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen w-screen px-12 bg-gray-100">
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-full max-w-sm">
         <h1 className="text-xl font-bold mb-4">Login</h1>
         <div className="mb-4">
-          <label htmlFor="token" className="block text-sm font-medium text-gray-700">
-            Personal Access Token
-          </label>
+         
           <input
             type="text"
             id="token"
@@ -24,6 +22,7 @@ const Login = ({ onLogin }) => {
             onChange={(e) => setToken(e.target.value)}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             required
+            placeholder="Please enter your Personal Access Token"
           />
         </div>
         <button

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Header from './components/Header';
 import { verifyToken } from './api';
 
 const App = () => {
@@ -21,11 +22,28 @@ const App = () => {
       }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    setIsAuthenticated(false);
+};
+
     return (
         <Router>
             <Routes>
                 <Route path="/" element={isAuthenticated ? <Navigate to="/home" /> : <Login onLogin={handleLogin} />} />
-                <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/" />} />
+                <Route 
+                    path="/home" 
+                    element={
+                        isAuthenticated ? (
+                            <>
+                                <Header onLogout={handleLogout} />
+                                <Home />
+                            </>
+                        ) : (
+                            <Navigate to="/" />
+                        ) 
+                    } 
+                />
             </Routes>
         </Router>
     );

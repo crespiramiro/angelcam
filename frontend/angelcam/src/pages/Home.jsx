@@ -14,7 +14,7 @@ const Home = ({onLogout}) => {
 
   return (
     <div className="h-screen w-screen overflow-x-hidden container  bg-[#f5f5f5]  flex flex-col justify-start items-start ">
-        <Header onLogout={onLogout} />  
+        {/* <Header onLogout={onLogout} />   */}
       <CameraList onSelectCamera={handleSelectCamera} />
       {selectedCamera && (
         <>

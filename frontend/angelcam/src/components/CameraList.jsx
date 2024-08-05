@@ -22,9 +22,9 @@ const CameraList = ({ onSelectCamera }) => {
   }, []);
 
   return (
-    <section className="flex flex-col w-full h-full px-4 py-10 bg-[#f5f5f5]">
-      <h2 className="text-2xl font-bold  self-center text-blue-500 opacity-70 my-10">Camera List</h2>
-      <div className="flex flex-col lg:flex-row justify-center items-center gap-x-12 ">
+    <section className="flex flex-col w-full h-full px-4 py-8 bg-[#f5f5f5]">
+      <h2 className="text-2xl font-bold  self-center text-blue-500 opacity-70 my-8 ">Camera List</h2>
+      <div className="flex flex-col lg:flex-row justify-center items-center py-6 gap-x-12 ">
         {cameras.map((camera) => (
           <div
             key={camera.id}

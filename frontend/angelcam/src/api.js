@@ -17,7 +17,7 @@ export async function fetchCameras() {
       }
       
       const data = await response.json();
-      console.log(data); // Añade este console.log para verificar la respuesta
+      console.log('fetchcamera DAta', data); // Añade este console.log para verificar la respuesta
       return data.results;
 }
 

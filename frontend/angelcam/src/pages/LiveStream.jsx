@@ -27,12 +27,12 @@ const LiveStream = ({ onLogout }) => {
   }
 
   return (
-    <div>
+    <main className="h-screen w-screen overflow-x-hidden container bg-[#f5f5f5] flex flex-col justify-start items-center" >
       <Header onLogout={onLogout} />
       <div className="p-4">
         <CameraStream camera={camera} />
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -1,59 +1,60 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Hls from 'hls.js';
 
 const CameraStream = ({ camera }) => {
-  const videoRef = useRef(null);
-  const [hls, setHls] = useState(null);
+  const [src, setSrc] = useState('');
   const [isPlaying, setIsPlaying] = useState(true);
+  const videoRef = useRef(null);
+  const [isHls, setIsHls] = useState(false);
 
   if (!camera) {
     return <div>No camera selected</div>;
   }
 
   const { streams } = camera;
-
-  if (!streams || streams.length === 0) {
-    return <div>No streams available for the camera</div>;
-  }
-
-  // Find the HLS stream
-  const hlsStream = streams.find(stream => stream.format === 'hls');
-  if (!hlsStream) {
-    return <div>No HLS stream available for the camera</div>;
-  }
+  const hlsStream = streams?.find(stream => stream.format === 'hls');
+  const mjpegStream = streams?.find(stream => stream.format === 'mjpeg');
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (Hls.isSupported()) {
-      const hlsInstance = new Hls();
-      hlsInstance.loadSource(hlsStream.url);
-      hlsInstance.attachMedia(video);
-      hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play();
-      });
-      setHls(hlsInstance);
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = hlsStream.url;
-      video.addEventListener('loadedmetadata', () => {
-        video.play();
-      });
+    // Priorizar HLS sobre MJPEG
+    if (hlsStream) {
+      setIsHls(true);
+      setSrc(hlsStream.url);
+      console.log('HLS Stream found, setting HLS to true and source to HLS URL');
+    } else if (mjpegStream) {
+      setIsHls(false);
+      setSrc(mjpegStream.url);
+      console.log('MJPEG Stream found, setting HLS to false and source to MJPEG URL');
+    } else {
+      console.log('No suitable stream found');
     }
+  }, [hlsStream, mjpegStream]);
 
-    return () => {
-      if (hls) {
+  useEffect(() => {
+    console.log('isHls:', isHls);
+    if (isHls && src && Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(src);
+      hls.attachMedia(videoRef.current);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        videoRef.current.play();
+      });
+
+      return () => {
         hls.destroy();
-      }
-    };
-  }, [hlsStream.url]);
+      };
+    }
+  }, [src, isHls]);
 
   const handlePlayPause = () => {
-    const video = videoRef.current;
-    if (video.paused) {
-      video.play();
-      setIsPlaying(true);
-    } else {
-      video.pause();
-      setIsPlaying(false);
+    if (isHls && videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+        setIsPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
     }
   };
 
@@ -67,19 +68,27 @@ const CameraStream = ({ camera }) => {
           </span>
         </div>
         <button
+          className="px-3 py-1 bg-red-500 hover:bg-red-600  text-white rounded-full"
           onClick={handlePlayPause}
-          className="text-white bg-red-500 px-2 py-1 rounded-full hover:bg-red-600"
         >
           {isPlaying ? 'Pause' : 'Play'}
         </button>
       </div>
       <div className="relative w-full h-full mt-16">
-        <video
-          ref={videoRef}
-          className="w-full h-full object-cover"
-          autoPlay
-          muted
-        />
+        {isHls ? (
+          <video
+            ref={videoRef}
+            className="w-full h-full object-cover"
+            controls={false}
+            autoPlay
+          />
+        ) : (
+          <img
+            src={src}
+            alt="Camera stream"
+            className="w-full h-full object-cover"
+          />
+        )}
       </div>
     </div>
   );

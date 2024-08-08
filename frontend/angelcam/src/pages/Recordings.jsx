@@ -29,7 +29,7 @@ const Recordings = ({ onLogout }) => {
     <div>
       <Header onLogout={onLogout} />
       <div className="p-4">
-        <RecordingsList camera={camera} />
+        <RecordingsList cameraId={cameraId} />
       </div>
     </div>
   );

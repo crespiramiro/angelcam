@@ -11,8 +11,8 @@ const LiveStream = ({ onLogout }) => {
   useEffect(() => {
     const getCameras = async () => {
       try {
-        const data = await fetchCameras(); // Obtén todas las cámaras
-        const selectedCamera = data.find(camera => camera.id === parseInt(cameraId)); // Encuentra la cámara seleccionada
+        const data = await fetchCameras();
+        const selectedCamera = data.find(camera => camera.id === parseInt(cameraId)); 
         setCamera(selectedCamera);
       } catch (error) {
         console.error('Error fetching cameras:', error);

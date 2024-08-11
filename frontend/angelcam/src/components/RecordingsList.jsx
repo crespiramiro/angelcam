@@ -3,21 +3,24 @@ import Hls from 'hls.js';
 import { fetchRecordings } from '../api';
 
 export const RecordingsList = ({ cameraId }) => {
-  const [recordings, setRecordings] = useState([]);
+  const [recording, setRecording] = useState(null);
   const videoRef = useRef(null);
 
   useEffect(() => {
     const getRecordings = async () => {
+      const startTime = '2024-07-02T14:00:00Z';
+      const endTime = '2024-07-02T14:02:00Z';
+
       try {
-        const data = await fetchRecordings(cameraId);
+        const data = await fetchRecordings(cameraId, startTime, endTime);
         console.log('Recordings Data in Component:', data);
-        if (Array.isArray(data) && data.length > 0) {
-          setRecordings(data);
+        if (data) {
+          setRecording(data); 
         } else {
-          console.error('No recordings available or data is not an array:', data);
+          console.error('No recording available:', data);
         }
       } catch (error) {
-        console.error('Error fetching recordings:', error);
+        console.error('Error fetching recording:', error);
       }
     };
 
@@ -25,41 +28,42 @@ export const RecordingsList = ({ cameraId }) => {
   }, [cameraId]);
 
   useEffect(() => {
-    if (recordings.length > 0 && videoRef.current) {
-      const hls = new Hls();
-      const firstRecordingUrl = recordings[0].url;
-
-      hls.loadSource(firstRecordingUrl);
+    if (recording && videoRef.current) {
+      const hls = new Hls({
+        liveSyncDurationCount: 1,
+        maxLiveSyncPlaybackRate: 1, 
+        liveDurationInfinity: false, 
+      });
+  
+      const recordingUrl = recording.url;
+  
+      hls.loadSource(recordingUrl);
       hls.attachMedia(videoRef.current);
-
+  
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         videoRef.current.play();
       });
-
+  
       return () => {
         hls.destroy();
       };
     }
-  }, [recordings]);
+  }, [recording]);
 
   return (
     <div>
-      <h2>Recordings List</h2>
-      {recordings.length > 0 ? (
-        <ul>
-          {recordings.map((recording, index) => (
-            <li key={index}>
-              <h3>Recording {index + 1}</h3>
-              <video
-                ref={videoRef}
-                controls
-                style={{ width: '100%', height: 'auto' }}
-              />
-            </li>
-          ))}
-        </ul>
+      <h2>Recording</h2>
+      {recording ? (
+        <div>
+          <h3>Recording Details</h3>
+          <video
+            ref={videoRef}
+            controls
+            style={{ width: '100%', height: 'auto' }}
+          />
+        </div>
       ) : (
-        <p>No recordings available.</p>
+        <p>No recording available.</p>
       )}
     </div>
   );

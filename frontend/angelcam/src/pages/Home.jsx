@@ -9,13 +9,13 @@ const Home = ({ onLogout }) => {
 
   const handleSelectCamera = (camera) => {
     setSelectedCamera(camera);
-    console.log(camera, 'CAMERA SELECTED'); // Verifica que la cámara seleccionada se muestra correctamente
+    console.log(camera, 'CAMERA SELECTED'); 
   };
 
   return (
     <div className="h-screen w-screen overflow-x-hidden container bg-[#f5f5f5] flex flex-col justify-start items-start">
       <Header onLogout={onLogout} />
-      <CameraList onSelectCamera={handleSelectCamera} />  {/* Pasa la función handleSelectCamera */}
+      <CameraList onSelectCamera={handleSelectCamera} /> 
       {selectedCamera && (
         <>
           <CameraStream camera={selectedCamera} />

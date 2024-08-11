@@ -17,25 +17,11 @@ export async function fetchCameras() {
       }
       
       const data = await response.json();
-      console.log('fetchcamera DAta', data); // Añade este console.log para verificar la respuesta
+      console.log('fetchcamera DAta', data); 
       return data.results;
 }
 
 
-// export async function fetchCameraStream(cameraId) {
-//     try {
-//         const response = await fetch(`${BASE_URL}/cameras/${cameraId}/stream/`);
-//         if (!response.ok) {
-//             throw new Error('Failed to fetch camera stream');
-//         }
-//         const data = await response.json();
-//         console.log('Camera Stream Data:', data); // Imprime el resultado en la consola
-//         return data;
-//     } catch (error) {
-//         console.error('Error fetching camera stream:', error);
-//         return null;
-//     }
-// }
 
 export async function verifyToken(token) {
     console.log('Verificando el token:', token);
@@ -49,7 +35,7 @@ export async function verifyToken(token) {
             },
         });
 
-        console.log('Respuesta de la verificación del token:', response);
+        console.log('Response to token verification', response);
 
         if (response.ok) {
             return true; // Token is valid
@@ -64,13 +50,13 @@ export async function verifyToken(token) {
 
 
 
-export async function fetchRecordings(cameraId) {
-    const token = localStorage.getItem('authToken'); 
+export async function fetchRecordings(cameraId, startTime, endTime) {
+    const token = localStorage.getItem('authToken');
     try {
-        const response = await fetch(`${BASE_URL}/cameras/${cameraId}/recordings/`, {
+        const response = await fetch(`${BASE_URL}/cameras/${cameraId}/recording/stream?start=${startTime}&end=${endTime}`, {
             method: 'GET',
             headers: {
-                'Authorization': `PersonalAccessToken ${token}`, // Incluye el token en el encabezado
+                'Authorization': `PersonalAccessToken ${token}`,
                 'Content-Type': 'application/json'
             }
         });
@@ -80,10 +66,10 @@ export async function fetchRecordings(cameraId) {
         }
 
         const data = await response.json();
-        console.log('Recordings Data:', data); // Imprime el resultado en la consola
-        return [data]; // Devuelve el objeto de grabación directamente
+        console.log('Recordings Data:', data);
+        return data; 
     } catch (error) {
         console.error('Error fetching recordings:', error);
-        return [];
+        return null; 
     }
 }

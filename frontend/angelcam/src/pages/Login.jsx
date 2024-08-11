@@ -5,8 +5,8 @@ const Login = ({ onLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem('authToken', token); // Guarda el token en el localStorage
-    onLogin(token); // Llama a onLogin con el token
+    localStorage.setItem('authToken', token); 
+    onLogin(token); 
   };
 
   return (

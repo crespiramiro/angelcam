@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
-import Header from './components/Header';
 import { verifyToken } from './api';
 import LiveStream from './pages/LiveStream';
 import Recordings from './pages/Recordings';

@@ -21,10 +21,7 @@ def get_camera_stream(token, camera_id):
     else:
         return {'error': response.text}
 
-def get_recordings(token, camera_id):
-    start_time = "2024-08-02T14:00:00Z"
-    end_time = "2024-08-02T14:05:00Z"
-
+def get_recordings(token, camera_id, start_time, end_time):
     response = requests.get(
         f'{BASE_URL}/shared-cameras/{camera_id}/recording/stream?start={start_time}&end={end_time}',
         headers=get_headers(token)

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import Header from "../components/Header";
-import { fetchCameras } from "../api"; // Suponiendo que tienes un método para obtener detalles de una cámara específica
+import { fetchCameras } from "../api"; 
 import { useEffect, useState } from "react";
 import { RecordingsList } from "../components/RecordingsList";
 

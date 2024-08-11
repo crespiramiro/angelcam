@@ -13,7 +13,7 @@ const CameraList = ({ onSelectCamera }) => {
         if (Array.isArray(data)) {
           setCameras(data);
         } else {
-          console.error('La respuesta de la API no es un array:', data);
+          console.error('Api response is not an array', data);
         }
       } catch (error) {
         console.error('Error fetching cameras:', error);
@@ -36,7 +36,7 @@ const CameraList = ({ onSelectCamera }) => {
               <div className="flex space-x-4">
                 <button 
                   onClick={() => {
-                    onSelectCamera(camera); // Pasa la cámara seleccionada
+                    onSelectCamera(camera); 
                     navigate(`/live/${camera.id}`);
                   }}
                   className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
